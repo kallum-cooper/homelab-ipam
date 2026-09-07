@@ -6,7 +6,7 @@ Dependency-free Node service for retaining LAN scan results, with a concise web 
 
 ```text
 compose.yml        # easy deployment using the published image
-compose.dev.yml    # local source-build override
+dev/                # development Dockerfile and deployment examples
 Dockerfile         # builds the image
 src/               # editable application source and tests
 README.md
@@ -34,7 +34,7 @@ Configuration contains no credentials. Supply only deployment-specific scanner a
 The public image is published at `ghcr.io/kallum-cooper/homelab-ipam`. The normal deployment only needs this repository's `compose.yml`, a protected `unifi.env`, and the UniFi CA certificate:
 
 ```sh
-cp unifi.env.example unifi.env
+cp dev/unifi.env.example unifi.env
 # Edit unifi.env and set UNIFI_API_KEY.
 chmod 600 unifi.env
 
@@ -51,9 +51,9 @@ Open `http://DOCKER_VM_ADDRESS:8787/`.
 The source remains available in this repository. To build and run local changes instead of pulling the published image:
 
 ```sh
-docker compose -f compose.yml -f compose.dev.yml up -d --build
+docker compose -f compose.yml -f dev/compose.yml up -d --build
 ```
 
 The development override keeps the same runtime configuration and persistent volume while replacing the image with a local build.
 
-For systemd-managed deployment, copy `ipam.service.example` to `/etc/systemd/system/ipam.service`, review `WorkingDirectory`, then enable it with `systemctl enable --now ipam.service`.
+For systemd-managed deployment, copy `dev/ipam.service.example` to `/etc/systemd/system/ipam.service`, review `WorkingDirectory`, then enable it with `systemctl enable --now ipam.service`.

@@ -1,0 +1,7 @@
+services:
+  ipam:
+    build:
+      context: .
+      dockerfile: dev/Dockerfile
+    image: homelab-ipam:dev
+    pull_policy: never
