@@ -53,34 +53,6 @@ docker compose pull
 docker compose up -d
 ```
 
-## Scan and retention behaviour
-
-### Automatic scans
-
-A scan runs automatically every 5 minutes.
-
-Only one scan is allowed to run at a time. If a scan is already running, another scan request shares the existing scan rather than starting a duplicate.
-
-The scanner has a configurable timeout to prevent a stalled network scan from blocking the service indefinitely.
-
-### Device expiry
-
-A device is removed only when its last successful sighting is at least 48 hours old.
-
-Devices that temporarily disappear from a scan remain visible until this retention period expires.
-
-### Failed scans
-
-If a scan fails, the service keeps the previous scan results and reports the error in its status.
-
-A failed scan does not remove devices or reset the last successful scan timestamp.
-
-## Manual scans
-
-Use the **Scan now** button in the dashboard to start a scan manually.
-
-The button is disabled while a scan is running.
-
 ## Optional UniFi hostname enrichment
 
 UniFi integration is optional.
@@ -129,6 +101,20 @@ Save the UniFi controller CA certificate as:
 unifi-ca.pem
 ```
 
+For a private or self-signed UniFi certificate, retrieve the server certificate from the controller with:
+
+```sh
+openssl s_client \
+  -connect unifi.local:443 \
+  -servername unifi.local \
+  </dev/null 2>/dev/null \
+  | openssl x509 -outform PEM > unifi-ca.pem
+```
+
+You can also export the certificate from your browser by opening the UniFi controller, viewing the site certificate, and choosing **Export** or **Download certificate**. Save the PEM certificate as `unifi-ca.pem`.
+
+Do not export or commit the controller's private key. If the controller uses a publicly trusted certificate, a separate CA certificate is normally not required, although the Compose override still expects the certificate file mount.
+
 Start IPAM with the UniFi Compose override:
 
 ```sh
@@ -143,18 +129,6 @@ UNIFI_HOSTNAME=unifi.local UNIFI_IP=192.168.1.1 \
 ```
 
 The certificate must be valid for the hostname used in `UNIFI_BASE_URL`.
-
-### Running without UniFi
-
-The default command remains:
-
-```sh
-docker compose up -d
-```
-
-No UniFi API key or certificate is required.
-
-Reverse DNS will still be attempted when available.
 
 ## Configuration
 
