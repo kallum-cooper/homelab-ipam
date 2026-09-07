@@ -101,19 +101,7 @@ Save the UniFi controller CA certificate as:
 unifi-ca.pem
 ```
 
-For a private or self-signed UniFi certificate, retrieve the server certificate from the controller with:
-
-```sh
-openssl s_client \
-  -connect unifi.local:443 \
-  -servername unifi.local \
-  </dev/null 2>/dev/null \
-  | openssl x509 -outform PEM > unifi-ca.pem
-```
-
-You can also export the certificate from your browser by opening the UniFi controller, viewing the site certificate, and choosing **Export** or **Download certificate**. Save the PEM certificate as `unifi-ca.pem`.
-
-Do not export or commit the controller's private key. If the controller uses a publicly trusted certificate, a separate CA certificate is normally not required, although the Compose override still expects the certificate file mount.
+Open the UniFi controller in your browser, view the site certificate, and choose **Export** or **Download certificate**. Save the PEM certificate as `unifi-ca.pem`.
 
 Start IPAM with the UniFi Compose override:
 
