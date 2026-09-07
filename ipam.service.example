@@ -1,0 +1,21 @@
+[Unit]
+Description=Homelab IPAM container
+After=docker.service network-online.target
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+Environment='IPAM_SCAN_ARGS_JSON=["--localnet"]'
+ExecStartPre=/usr/bin/docker volume create ipam-data
+ExecStartPre=-/usr/bin/docker rm ipam
+ExecStart=/usr/bin/docker run --name ipam --network host --cap-drop ALL --cap-add NET_RAW --env IPAM_SCAN_ARGS_JSON --mount source=ipam-data,target=/data homelab-ipam:latest
+ExecStop=/usr/bin/docker stop -t 15 ipam
+ExecStopPost=-/usr/bin/docker rm ipam
+Restart=on-failure
+RestartSec=5s
+TimeoutStartSec=60s
+TimeoutStopSec=30s
+
+[Install]
+WantedBy=multi-user.target
