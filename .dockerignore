@@ -1,6 +1,12 @@
 .git
+.github
 test
 README.md
 ipam.service.example
+compose.yml
+compose.dev.yml
+unifi.env
+unifi-ca.pem
+*.pem
 *.log
 ipam-state.json

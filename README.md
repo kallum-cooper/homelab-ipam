@@ -21,31 +21,29 @@ Configuration contains no credentials. Supply only deployment-specific scanner a
 
 ## Container deployment
 
-Build the image and create a named volume:
+The public image is published at `ghcr.io/kallum-cooper/homelab-ipam`. The normal deployment only needs this repository's `compose.yml`, a protected `unifi.env`, and the UniFi CA certificate:
 
 ```sh
-docker build -t homelab-ipam:latest ./ipam
-docker volume create ipam-data
+cp unifi.env.example unifi.env
+# Edit unifi.env and set UNIFI_API_KEY.
+chmod 600 unifi.env
+
+# Save the UniFi CA certificate as unifi-ca.pem.
+docker compose up -d
 ```
 
-Run it on the host network so LAN discovery occurs from the Docker VM. The Node process remains the image's non-root `node` user; the scanner receives only the network capabilities it needs.
+`compose.yml` runs the image on the host network so LAN discovery occurs from the Docker VM. The Node process remains the image's non-root `node` user; the scanner receives only the network capability it needs. The named `ipam-data` volume preserves `/data/ipam-state.json` across container replacement. Do not put credentials in the image or command line.
 
-For UniFi enrichment, place `UNIFI_BASE_URL=https://unifi.local/proxy/network/integration/v1`, `UNIFI_API_KEY`, and `UNIFI_CA_CERT_PATH=/run/secrets/unifi-ca.pem` in a protected env file. Map `unifi.local` to the controller address when the certificate is issued to that hostname.
+Open `http://DOCKER_VM_ADDRESS:8787/`.
+
+### Development
+
+The source remains available in this repository. To build and run local changes instead of pulling the published image:
 
 ```sh
-docker run -d \
-  --name ipam \
-  --restart unless-stopped \
-  --network host \
-  --add-host unifi.local:192.168.1.1 \
-  --cap-drop ALL \
-  --cap-add NET_RAW \
-  --mount type=bind,src=/home/kallum/homelab-ipam/unifi-ca.pem,dst=/run/secrets/unifi-ca.pem,ro \
-  --env 'IPAM_SCAN_ARGS_JSON=["--localnet"]' \
-  --mount source=ipam-data,target=/data \
-  homelab-ipam:latest
+docker compose -f compose.yml -f compose.dev.yml up -d --build
 ```
 
-Open `http://DOCKER_VM_ADDRESS:8787/`. The named `ipam-data` volume preserves `/data/ipam-state.json` across container replacement. Adjust scanner arguments and the timeout for the target LAN; do not put credentials in the image or command line.
+The development override keeps the same runtime configuration and persistent volume while replacing the image with a local build.
 
-For systemd-managed deployment, copy `ipam.service.example` to `/etc/systemd/system/ipam.service`, review the image name and scanner arguments, then enable it with `systemctl enable --now ipam.service`.
+For systemd-managed deployment, copy `ipam.service.example` to `/etc/systemd/system/ipam.service`, review `WorkingDirectory`, then enable it with `systemctl enable --now ipam.service`.

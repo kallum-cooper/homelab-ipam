@@ -1,0 +1,4 @@
+unifi.env
+unifi-ca.pem
+*.pem
+ipam-state.json
