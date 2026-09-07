@@ -9,16 +9,10 @@ services:
       - ALL
     cap_add:
       - NET_RAW
-    extra_hosts:
-      - "unifi.local:192.168.1.1"
-    env_file:
-      - ${IPAM_ENV_FILE:-./unifi.env}
     environment:
       IPAM_SCAN_ARGS_JSON: '["--localnet"]'
-      UNIFI_CA_CERT_PATH: /run/secrets/unifi-ca.pem
     volumes:
       - ipam-data:/data
-      - ${IPAM_CA_CERT_FILE:-./unifi-ca.pem}:/run/secrets/unifi-ca.pem:ro
 
 volumes:
   ipam-data:

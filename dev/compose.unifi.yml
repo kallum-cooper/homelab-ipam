@@ -1,0 +1,10 @@
+services:
+  ipam:
+    extra_hosts:
+      - "${UNIFI_HOSTNAME:-unifi.local}:${UNIFI_IP:-192.168.1.1}"
+    env_file:
+      - ${IPAM_ENV_FILE:-./unifi.env}
+    environment:
+      UNIFI_CA_CERT_PATH: /run/secrets/unifi-ca.pem
+    volumes:
+      - ${IPAM_CA_CERT_FILE:-./unifi-ca.pem}:/run/secrets/unifi-ca.pem:ro
