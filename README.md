@@ -118,21 +118,6 @@ UNIFI_HOSTNAME=unifi.local UNIFI_IP=192.168.1.1 \
 
 The certificate must be valid for the hostname used in `UNIFI_BASE_URL`.
 
-## Configuration
-
-| Variable | Default | Description |
-| --- | --- | --- |
-| `IPAM_PORT` | `8787` | HTTP listening port |
-| `IPAM_HOST` | `0.0.0.0` | HTTP listening address |
-| `IPAM_DATA_PATH` | `/data/ipam-state.json` | Persistent state file |
-| `IPAM_SCAN_COMMAND` | `arp-scan` | Scanner executable |
-| `IPAM_SCAN_ARGS_JSON` | `["--localnet"]` in Compose | JSON array of scanner arguments |
-| `IPAM_SCAN_TIMEOUT_MS` | `30000` | Scan timeout in milliseconds |
-| `UNIFI_BASE_URL` | empty | Optional UniFi API base URL |
-| `UNIFI_API_KEY` | empty | Optional UniFi API key |
-| `UNIFI_CLIENTS_PATH` | empty | Optional complete UniFi clients API path |
-| `UNIFI_CA_CERT_PATH` | `/run/secrets/unifi-ca.pem` | UniFi CA certificate path |
-
 ## Persistent data
 
 Scan state is stored in:
