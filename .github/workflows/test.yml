@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node --test test/*.test.mjs
-      - run: node --check enrichment.mjs
-      - run: node --check unifi.mjs
-      - run: node --check run.mjs
+      - run: node --test src/test/*.test.mjs
+      - run: node --check src/enrichment.mjs
+      - run: node --check src/unifi.mjs
+      - run: node --check src/run.mjs

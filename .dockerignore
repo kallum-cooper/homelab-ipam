@@ -1,6 +1,6 @@
 .git
 .github
-test
+src/test
 README.md
 ipam.service.example
 compose.yml

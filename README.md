@@ -2,6 +2,16 @@
 
 Dependency-free Node service for retaining LAN scan results, with a concise web UI and manual scans. The scanner process is bounded by a configurable timeout; successful results are stored in `/data/ipam-state.json` in the container.
 
+## Repository layout
+
+```text
+compose.yml        # easy deployment using the published image
+compose.dev.yml    # local source-build override
+Dockerfile         # builds the image
+src/               # editable application source and tests
+README.md
+```
+
 ## Configuration
 
 | Variable | Default | Purpose |

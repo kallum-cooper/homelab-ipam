@@ -6,7 +6,7 @@ RUN apk add --no-cache arp-scan libcap \
     && chown node:node /app /data
 
 WORKDIR /app
-COPY --chown=node:node *.mjs index.html ./
+COPY --chown=node:node src/*.mjs src/index.html ./
 
 USER node
 ENV IPAM_DATA_PATH=/data/ipam-state.json
