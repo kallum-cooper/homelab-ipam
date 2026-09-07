@@ -1,10 +1,6 @@
 # Homelab IPAM
 
 <p align="center">
-  <img src="docs/images/ipam-dashboard.png" alt="Homelab IPAM dashboard showing discovered network devices" width="1000">
-</p>
-
-<p align="center">
   A lightweight, self-hosted LAN IP address management dashboard for Docker.
 </p>
 
